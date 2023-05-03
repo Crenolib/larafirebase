@@ -30,6 +30,10 @@ class Larafirebase
 
     private $fromRaw;
 
+    private $data;
+
+    private $channel;
+
     const API_URI = 'https://fcm.googleapis.com/fcm/send';
 
     public function withTitle($title)
@@ -43,6 +47,18 @@ class Larafirebase
     {
         $this->body = $body;
 
+        return $this;
+    }
+
+    public function withData($data)
+    {
+        $this->data = $data;
+        return $this;
+    }
+
+    public function withChannel($channel)
+    {
+        $this->channel = $channel;
         return $this;
     }
 
@@ -112,9 +128,10 @@ class Larafirebase
                 'image' => $this->image,
                 'icon' => $this->icon,
                 'sound' => $this->sound,
-                'click_action' => $this->clickAction
+                'click_action' => $this->clickAction, 
+                'android_channel_id' => $this->channel
             ],
-            'data' => $this->additionalData,
+            'data' => $this->data,
             'priority' => $this->priority
         );
 
@@ -126,6 +143,7 @@ class Larafirebase
         $data = ($this->fromArray) ? $this->fromArray : [
             'title' => $this->title,
             'body' => $this->body,
+            'android_channel_id' => $this->channel
         ];
 
         $data = $this->additionalData ? array_merge($data, $this->additionalData) : $data;
